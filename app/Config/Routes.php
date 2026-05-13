@@ -16,16 +16,23 @@ $routes->group('employe', function($routes) {
     $routes->get('teste', 'EmployeController::teste');
     $routes->get('logout', 'EmployeController::logout');
     $routes->get('profile', 'EmployeController::profile');
+    $routes->get('conge/historique', 'EmployeController::historique');
     $routes->get('conge/demande', 'CongeController::demande');
     $routes->post('conge/submit', 'CongeController::submitDemande');
-    $routes->get('conge/historique', 'CongeController::historique');
 });
 
 // Routes pour les RH
 $routes->group('rh', function($routes) {
     $routes->get('dashboard', 'RHController::dashboard');
-    $routes->get('conge/approbation', 'CongeController::approbation');
+    $routes->get('conge/approbation', 'RHController::approbation');
     $routes->post('conge/approbation', 'CongeController::submitApprobation');
 });
 
 // Routes pour les administrateurs
+$routes->group('admin', function($routes) {
+    $routes->get('/', 'AdminController::dashboard');
+    $routes->get('dashboard', 'AdminController::dashboard');
+    $routes->get('dashbord', 'AdminController::dashboard');
+    $routes->get('employes', 'AdminController::employes');
+    $routes->get('conges', 'AdminController::conges');
+});
