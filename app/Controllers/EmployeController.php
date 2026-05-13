@@ -64,10 +64,6 @@ class EmployeController extends BaseController
         return redirect()->to('/login');
     }
 
-    public function teste(){
-        return view('employe/teste');
-    }
-
     public function dashboard()
     {
         $this->requireEmployeLogin();

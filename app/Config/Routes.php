@@ -13,7 +13,6 @@ $routes->get('/logout', 'EmployeController::logout');
 // Routes pour les employés
 $routes->group('employe', function($routes) {
     $routes->get('dashboard', 'EmployeController::dashboard');
-    $routes->get('teste', 'EmployeController::teste');
     $routes->get('logout', 'EmployeController::logout');
     $routes->get('profile', 'EmployeController::profile');
     $routes->get('conge/historique', 'EmployeController::historique');
