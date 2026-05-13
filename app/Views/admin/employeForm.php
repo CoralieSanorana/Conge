@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
-</head>
-<body>
-    <div class="app-wrap">
-
-    <?= $this->include('Layouts/header') ?>
+<?php
+$pageTitle = 'Formulaire';
+$employe = $employe ?? [];
+$departement = $departement ?? null;
+$typesConge = $typesConge ?? [];
+$soldes = $soldes ?? [];
+$sidebarItems = [
+    ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('employe/dashboard')],
+    ['label' => 'Nouvelle demande', 'icon' => 'bi-plus-circle', 'url' => site_url('employe/conge/demande'), 'active' => true],
+    ['label' => 'Mes demandes', 'icon' => 'bi-calendar3', 'url' => site_url('employe/conge/historique')],
+    ['label' => 'Mon profil', 'icon' => 'bi-person', 'url' => site_url('employe/profile')],
+];
+$sidebarUser = [
+    'name' => trim(($employe['prenom'] ?? '') . ' ' . ($employe['nom'] ?? '')) ?: 'Employé',
+    'role' => $employe['role'] ?? 'EMPLOYE',
+    'department' => $departement['nom'] ?? 'Aucun département',
+    'avatarClass' => 'av-green',
+    'initials' => strtoupper(substr($employe['prenom'] ?? 'E', 0, 1) . substr($employe['nom'] ?? 'M', 0, 1)),
+];
+?>
+<?= $this->include('Layouts/header') ?>
+<div class="app-wrap">
+    <?= $this->include('Layouts/sidebar') ?>
 
     <div class="main">
         <div class="topbar">

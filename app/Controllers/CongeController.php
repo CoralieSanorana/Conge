@@ -50,13 +50,71 @@ class CongeController extends BaseController
         }
 
         $userId = (int) session()->get('employe_id');
-        $typeCongeId = $this->request->getPost('type_conge_id');
-        $dateDebut = $this->request->getPost('date_debut');
-        $dateFin = $this->request->getPost('date_fin');
-        $motif = $this->request->getPost('motif');
+        $typeCongeId = (int) $this->request->getPost('type_conge_id');
+        $dateDebut = trim((string) $this->request->getPost('date_debut'));
+        $dateFin = trim((string) $this->request->getPost('date_fin'));
+        $motif = trim((string) $this->request->getPost('motif'));
 
+        // Validation des champs obligatoires
+        if (!$typeCongeId || !$dateDebut || !$dateFin) {
+            session()->setFlashdata('error', 'Tous les champs obligatoires doivent être complétés.');
+            return redirect()->back();
+        }
+
+        // Validation des dates
+        if (strtotime($dateDebut) === false || strtotime($dateFin) === false) {
+            session()->setFlashdata('error', 'Les dates saisies sont invalides.');
+            return redirect()->back();
+        }
+
+        if (strtotime($dateDebut) > strtotime($dateFin)) {
+            session()->setFlashdata('error', 'La date de début ne peut pas être après la date de fin.');
+            return redirect()->back();
+        }
+
+        // Calcul du nombre de jours
         $nbJours = (int) ((strtotime($dateFin) - strtotime($dateDebut)) / (60 * 60 * 24) + 1);
 
+        if ($nbJours <= 0) {
+            session()->setFlashdata('error', 'La durée de la demande doit être d\'au moins 1 jour.');
+            return redirect()->back();
+        }
+
+        // Vérifier que le type de congé existe
+        $typeConge = SqliteDb::fetchOne(
+            'SELECT id, libelle FROM types_conge WHERE id = :id LIMIT 1',
+            [':id' => $typeCongeId]
+        );
+
+        if (!$typeConge) {
+            session()->setFlashdata('error', 'Le type de congé sélectionné est invalide.');
+            return redirect()->back();
+        }
+
+        // Vérifier le solde disponible
+        $annee = (int) date('Y');
+        $solde = SqliteDb::fetchOne(
+            'SELECT restant, jours_attribues FROM soldes WHERE employe_id = :employe_id AND type_conge_id = :type_conge_id AND annee = :annee LIMIT 1',
+            [':employe_id' => $userId, ':type_conge_id' => $typeCongeId, ':annee' => $annee]
+        );
+
+        if (!$solde) {
+            session()->setFlashdata('error', 'Vous n\'avez pas d\'allocation pour ce type de congé cette année.');
+            return redirect()->back();
+        }
+
+        $soldeRestant = (int) ($solde['restant'] ?? 0);
+
+        if ($nbJours > $soldeRestant) {
+            session()->setFlashdata(
+                'error',
+                'Solde insuffisant pour cette demande. Vous avez ' . $soldeRestant . ' jour(s) restant(s) pour ' . 
+                esc($typeConge['libelle']) . ', mais vous en demandez ' . $nbJours . '.'
+            );
+            return redirect()->back();
+        }
+
+        // Créer la demande si toutes les validations sont passées
         SqliteDb::execute(
             'INSERT INTO conges (employe_id, type_conge_id, date_debut, date_fin, nb_jours, motif, statut, created_at)
              VALUES (:employe_id, :type_conge_id, :date_debut, :date_fin, :nb_jours, :motif, :statut, :created_at)',

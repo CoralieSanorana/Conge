@@ -2,10 +2,34 @@
 $sidebarTitle = $sidebarTitle ?? 'TechMada RH';
 $sidebarSubtitle = $sidebarSubtitle ?? '';
 $sidebarSection = $sidebarSection ?? 'Menu';
-$sidebarItems = $sidebarItems ?? [];
 $sidebarUser = $sidebarUser ?? [];
 $logoutUrl = $logoutUrl ?? site_url('logout');
 $initials = $sidebarUser['initials'] ?? strtoupper(substr($sidebarUser['name'] ?? 'TR', 0, 2));
+$role = strtoupper((string) (session()->get('employe_role') ?? $sidebarUser['role'] ?? 'EMPLOYE'));
+
+if (empty($sidebarItems)) {
+    $sidebarItems = match ($role) {
+        'ADMIN' => [
+            ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('admin/dashboard')],
+            ['label' => 'Employés', 'icon' => 'bi-people', 'url' => site_url('admin/employes')],
+            ['label' => 'Formulaire', 'icon' => 'bi-people', 'url' => site_url('admin/employe/form')],
+            ['label' => 'Congés', 'icon' => 'bi-calendar2-week', 'url' => site_url('admin/conges')],
+        ],
+        'RH' => [
+            ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('rh/dashboard')],
+            ['label' => 'Approbations', 'icon' => 'bi-check2-square', 'url' => site_url('rh/conge/approbation')],
+            ['label' => 'Congés', 'icon' => 'bi-calendar3', 'url' => site_url('rh/conges')],
+        ],
+        default => [
+            ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('employe/dashboard')],
+            ['label' => 'Nouvelle demande', 'icon' => 'bi-plus-circle', 'url' => site_url('employe/conge/demande')],
+            ['label' => 'Mes demandes', 'icon' => 'bi-calendar3', 'url' => site_url('employe/conge/historique')],
+            ['label' => 'Mon profil', 'icon' => 'bi-person', 'url' => site_url('employe/profile')],
+        ],
+    };
+}
+
+$currentPath = trim(parse_url(current_url(), PHP_URL_PATH) ?? '', '/');
 ?>
 <aside class="sidebar">
     <div class="sidebar-brand">
@@ -19,8 +43,9 @@ $initials = $sidebarUser['initials'] ?? strtoupper(substr($sidebarUser['name'] ?
 
     <ul class="sidebar-nav">
         <?php foreach ($sidebarItems as $item) : ?>
+        <?php $itemPath = trim(parse_url($item['url'] ?? '#', PHP_URL_PATH) ?? '', '/'); ?>
         <li>
-            <a href="<?= esc($item['url'] ?? '#') ?>" class="<?= !empty($item['active']) ? 'active' : '' ?>">
+            <a href="<?= esc($item['url'] ?? '#') ?>" class="<?= $itemPath !== '' && $itemPath === $currentPath ? 'active' : (!empty($item['active']) ? 'active' : '') ?>">
                 <i class="bi <?= esc($item['icon'] ?? 'bi-dot') ?>"></i>
                 <span><?= esc($item['label'] ?? '') ?></span>
                 <?php if (!empty($item['badge'])) : ?>

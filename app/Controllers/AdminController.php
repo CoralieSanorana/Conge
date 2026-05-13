@@ -70,4 +70,18 @@ class AdminController extends BaseController
 
         return view('admin/conges', $data);
     }
+
+    public function departementForm(){
+        $this->requireLogin();
+        return view('admin/departementForm');
+    }
+
+    public function submitDepartement(){
+        $this->requireLogin();
+        $nom = $this->request->getPost('nom');
+        if ($nom) {
+            SqliteDb::execute('INSERT INTO departements (nom) VALUES (:nom)', [':nom' => $nom]);
+        }
+        return redirect()->to('/admin/departement/form')->with('success', 'Département ajouté avec succès');
+    }
 }
