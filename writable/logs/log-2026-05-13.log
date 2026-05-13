@@ -1,0 +1,218 @@
+CRITICAL - 2026-05-13 07:30:01 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(13): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:30:10 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(13): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:34:11 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(19): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:34:20 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: GET, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(19): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:35:33 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(19): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2026-05-13 07:40:08 --> no such table: departements
+in SYSTEMPATH\Database\SQLite3\Connection.php on line 163.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(163): SQLite3->exec('INSERT INTO `departements` (`description`, `nom`)
+VALUES (\'Equipe technique et support applicatif\',\'Informatique\'), (\'Gestion des collaborateurs et des congés\',\'Ressources Humaines\'), (\'Pilotage et coordination generale\',\'Direction\')')
+ 2 SYSTEMPATH\Database\BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute('INSERT INTO `departements` (`description`, `nom`)
+VALUES (\'Equipe technique et support applicatif\',\'Informatique\'), (\'Gestion des collaborateurs et des congés\',\'Ressources Humaines\'), (\'Pilotage et coordination generale\',\'Direction\')')
+ 3 SYSTEMPATH\Database\BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `departements` (`description`, `nom`)
+VALUES (\'Equipe technique et support applicatif\',\'Informatique\'), (\'Gestion des collaborateurs et des congés\',\'Ressources Humaines\'), (\'Pilotage et coordination generale\',\'Direction\')')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1841): CodeIgniter\Database\BaseConnection->query('INSERT INTO `departements` (`description`, `nom`)
+VALUES (\'Equipe technique et support applicatif\',\'Informatique\'), (\'Gestion des collaborateurs et des congés\',\'Ressources Humaines\'), (\'Pilotage et coordination generale\',\'Direction\')', null, false)
+ 5 SYSTEMPATH\Database\BaseBuilder.php(2230): CodeIgniter\Database\BaseBuilder->batchExecute('_insertBatch', 100)
+ 6 APPPATH\Database\Seeds\InitialDataSeeder.php(26): CodeIgniter\Database\BaseBuilder->insertBatch([...])
+ 7 SYSTEMPATH\Database\Seeder.php(155): App\Database\Seeds\InitialDataSeeder->run()
+ 8 SYSTEMPATH\Commands\Database\Seed.php(79): CodeIgniter\Database\Seeder->call('App\\Database\\Seeds\\InitialDataSeeder')
+ 9 SYSTEMPATH\CLI\Commands.php(74): CodeIgniter\Commands\Database\Seed->run([])
+10 SYSTEMPATH\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('db:seed', [...])
+11 SYSTEMPATH\Boot.php(442): CodeIgniter\CLI\Console->run()
+12 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+13 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:41:44 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(19): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:48:52 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: GET, Route: employe/dashboard]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(36): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->dashboard()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:49:00 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: GET, Route: employe/conge/demande]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\CongeController.php(13): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\CongeController->demande()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\CongeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:51:56 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(19): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:56:13 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: GET, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(17): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 07:57:15 --> CodeIgniter\Exceptions\CriticalError: The required PHP extension "sqlite3" is not loaded. Install and enable it to use "SQLite3" driver.
+[Method: POST, Route: login]
+in SYSTEMPATH\Database\Database.php on line 186.
+ 1 SYSTEMPATH\Database\Database.php(59): CodeIgniter\Database\Database->checkDbExtension('SQLite3')
+ 2 SYSTEMPATH\Database\Config.php(82): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(150): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\EmployeController.php(17): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->login()
+ 6 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 08:11:09 --> ErrorException: Undefined array key "nom"
+[Method: GET, Route: employe/conge/demande]
+in APPPATH\Views\employe\demande.php on line 62.
+ 1 APPPATH\Views\employe\demande.php(62): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nom"', 'D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php', 62)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employe/demande', [], true)
+ 5 APPPATH\Controllers\CongeController.php(17): view('employe/demande', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\CongeController->demande()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\CongeController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 08:12:09 --> ErrorException: Undefined array key "nom"
+[Method: GET, Route: employe/conge/demande]
+in APPPATH\Views\employe\demande.php on line 62.
+ 1 APPPATH\Views\employe\demande.php(62): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nom"', 'D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php', 62)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employe/demande', [], true)
+ 5 APPPATH\Controllers\CongeController.php(17): view('employe/demande', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\CongeController->demande()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\CongeController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 08:15:47 --> ErrorException: Undefined array key "nom"
+[Method: GET, Route: employe/conge/demande]
+in APPPATH\Views\employe\demande.php on line 62.
+ 1 APPPATH\Views\employe\demande.php(62): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nom"', 'D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php', 62)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employe/demande', [], true)
+ 5 APPPATH\Controllers\CongeController.php(17): view('employe/demande', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\CongeController->demande()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\CongeController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 08:15:48 --> ErrorException: Undefined array key "nom"
+[Method: GET, Route: employe/conge/demande]
+in APPPATH\Views\employe\demande.php on line 62.
+ 1 APPPATH\Views\employe\demande.php(62): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "nom"', 'D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php', 62)
+ 2 SYSTEMPATH\View\View.php(240): include('D:\\ITU\\S4\\Systeme d\'information\\2026-05-13\\Conge\\app\\Views\\employe\\demande.php')
+ 3 SYSTEMPATH\View\View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1250): CodeIgniter\View\View->render('employe/demande', [], true)
+ 5 APPPATH\Controllers\CongeController.php(17): view('employe/demande', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\CongeController->demande()
+ 7 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\CongeController))
+ 8 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))

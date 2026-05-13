@@ -1,56 +1,101 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\Employe;
-use App\Models\Departement;
-
-use App\Models\Solde;
-use App\Models\Conge;
+use App\Libraries\SqliteDb;
 class EmployeController extends BaseController
 {
-    public function login(): string{
     public function login()
     {
-        $departementModel = new Departement();
+        if ($this->request->is('get')) {
+            return view('login');
+        }
+
+        $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        $user = $employeModel->where('email', $email)->first();
-        if ($user && $this->passwordValide($password, $user['password'])) {
+        $user = SqliteDb::fetchOne('SELECT * FROM employes WHERE email = :email LIMIT 1', [':email' => $email]);
         if ($user && password_verify($password, $user['password'])) {
+            session()->set('employe_id', $user['id']);
+            session()->set('employe_email', $user['email']);
             session()->set('employe_role', $user['role']);
-            return redirect()->to('employe/dashboard');
             return redirect()->to('/employe/dashboard');
+        }
+
+        session()->setFlashdata('error', 'Identifiants diso. Veuillez réessayer.');
+        return redirect()->to('/login');
     }
 
-        session()->setFlashdata('error', 'Identifiants incorrects. Veuillez réessayer.');
-        return view('login');
+    public function teste(){
+        return view('employe/teste');
     }
 
     public function dashboard()
     {
-        $employeModel = new Employe();
-        $departementModel = new Departement();
-        $soldeModel = new Solde();
-        $congeModel = new Conge();
+        $employeId = session()->get('employe_id')?:1;
+        if (!$employeId) {
+            return redirect()->to('/login');
+        }
 
-        $employeId = session()->get('employe_id');
-        $employe = $employeModel->find($employeId);
+        $employe = SqliteDb::fetchOne('SELECT * FROM employes WHERE id = :id LIMIT 1', [':id' => $employeId]);
         if (!$employe) {
             return redirect()->to('/login');
         }
 
         $departement = null;
         if ($employe['departement_id']) {
-            $departement = $departementModel->find($employe['departement_id']);
+            $departement = SqliteDb::fetchOne('SELECT * FROM departements WHERE id = :id LIMIT 1', [':id' => $employe['departement_id']]);
         }
 
         $annee = (int) date('Y');
-        $congesAttente = $congeModel->getCongesAttenteByEmploye($employeId);
-        $congesAcceptes = $congeModel->getCongesAcceptesByEmploye($employeId);
-        $congesRefuses = $congeModel->getCongesRefusesByEmploye($employeId);
-        $congesRecents = $congeModel->getDernieresDemandesByEmploye($employeId, 5);
-        $soldeResume = $soldeModel->getSoldeTotal($employeId, $annee);
-        $soldes = $soldeModel->getSoldesByEmployeAndAnnee($employeId, $annee);
+        $congesAttente = SqliteDb::fetchAll(
+            'SELECT c.*, t.libelle AS type_conge_libelle
+             FROM conges c
+             LEFT JOIN types_conge t ON t.id = c.type_conge_id
+             WHERE c.employe_id = :id AND c.statut = :statut
+             ORDER BY c.created_at DESC',
+            [':id' => $employeId, ':statut' => 'En attente']
+        );
+        $congesAcceptes = SqliteDb::fetchAll(
+            'SELECT c.*, t.libelle AS type_conge_libelle
+             FROM conges c
+             LEFT JOIN types_conge t ON t.id = c.type_conge_id
+             WHERE c.employe_id = :id AND c.statut = :statut
+             ORDER BY c.created_at DESC',
+            [':id' => $employeId, ':statut' => 'Approuvé']
+        );
+        $congesRefuses = SqliteDb::fetchAll(
+            'SELECT c.*, t.libelle AS type_conge_libelle
+             FROM conges c
+             LEFT JOIN types_conge t ON t.id = c.type_conge_id
+             WHERE c.employe_id = :id AND c.statut = :statut
+             ORDER BY c.created_at DESC',
+            [':id' => $employeId, ':statut' => 'Refusé']
+        );
+        $congesRecents = SqliteDb::fetchAll(
+            'SELECT c.*, t.libelle AS type_conge_libelle
+             FROM conges c
+             LEFT JOIN types_conge t ON t.id = c.type_conge_id
+             WHERE c.employe_id = :id
+             ORDER BY c.created_at DESC
+             LIMIT 5',
+            [':id' => $employeId]
+        );
+        $soldeResume = SqliteDb::fetchOne(
+            'SELECT COALESCE(SUM(jours_attribues), 0) AS total_attribues,
+                    COALESCE(SUM(jours_pris), 0) AS total_pris,
+                    COALESCE(SUM(restant), 0) AS total_restant
+             FROM soldes
+             WHERE employe_id = :id AND annee = :annee',
+            [':id' => $employeId, ':annee' => $annee]
+        ) ?? ['total_attribues' => 0, 'total_pris' => 0, 'total_restant' => 0];
+        $soldes = SqliteDb::fetchAll(
+            'SELECT s.*, t.libelle, t.deductible, t.jours_annuels
+             FROM soldes s
+             LEFT JOIN types_conge t ON t.id = s.type_conge_id
+             WHERE s.employe_id = :id AND s.annee = :annee
+             ORDER BY t.libelle ASC',
+            [':id' => $employeId, ':annee' => $annee]
+        );
 
         $data = [
             'employe' => $employe,
@@ -75,25 +120,11 @@ class EmployeController extends BaseController
 
     public function profile()
     {
-        $employeModel = new Employe();
-        $departementModel = new Departement();
-
-        $employeId = session()->get('employe_id');
-        $employe = $employeModel->find($employeId);
-        if (!$employe) {
+        $employeId = session()->get('employe_id')?:1;
+        if (!$employeId) {
             return redirect()->to('/login');
         }
 
-        $departement = null;
-        if ($employe['departement_id']) {
-            $departement = $departementModel->find($employe['departement_id']);
-        }
-
-        $data = [
-            'employe' => $employe,
-            'departement' => $departement,
-        ];
-
-        return view('employe/profile', $data);
+        return redirect()->to('/employe/dashboard');
     }
 }

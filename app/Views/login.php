@@ -49,7 +49,7 @@
                 </div>
             <?php endif; ?>
 
-            <form action="<?= base_url('login') ?>" method="post">
+            <form action="<?= base_url('/login') ?>" method="post">
                 <div class="f-group">
                     <label class="f-label">Adresse email</label>
                     <input type="email" name="email" class="f-input" placeholder="vous@example.mg" value="employe@example.mg"/>

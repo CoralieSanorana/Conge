@@ -7,12 +7,17 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/login', 'EmployeController::login');
+$routes->post('/login', 'EmployeController::login');
+$routes->get('/logout', 'EmployeController::logout');
 
 // Routes pour les employés
 $routes->group('employe', function($routes) {
     $routes->get('dashboard', 'EmployeController::dashboard');
+    $routes->get('teste', 'EmployeController::teste');
+    $routes->get('logout', 'EmployeController::logout');
+    $routes->get('profile', 'EmployeController::profile');
     $routes->get('conge/demande', 'CongeController::demande');
-    $routes->post('conge/demande', 'CongeController::submitDemande');
+    $routes->post('conge/submit', 'CongeController::submitDemande');
     $routes->get('conge/historique', 'CongeController::historique');
 });
 
