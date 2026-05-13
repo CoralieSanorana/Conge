@@ -2,12 +2,16 @@
 
 namespace App\Controllers;
 use \App\Models\TypeConge;
+use \App\Models\Employe;
+use \App\Models\Departement;
 class CongeController extends BaseController
 {
     public function demande()
     {
         $typeCongeModel = new TypeConge();
-        return view('employe/demande');
+        $typesConge = $typeCongeModel->findAll();
+        $data['typesConge'] = $typesConge;
+        return view('employe/demande', $data);
     }
 
 
