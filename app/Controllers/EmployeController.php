@@ -25,6 +25,13 @@ class EmployeController extends BaseController
 
         return ($first . $last) !== '' ? $first . $last : '--';
     }
+   protected function requireEmployeLogin()
+    {
+        if (!session()->get('employe_id')) {
+            redirect()->to('/login')->send();
+            exit;
+        }
+    }
 
     public function login()
     {
@@ -40,6 +47,16 @@ class EmployeController extends BaseController
             session()->set('employe_id', $user['id']);
             session()->set('employe_email', $user['email']);
             session()->set('employe_role', $user['role']);
+
+            $role = strtoupper((string) ($user['role'] ?? 'EMPLOYE'));
+            if ($role === 'ADMIN') {
+                return redirect()->to('/admin/dashboard');
+            }
+
+            if ($role === 'RH') {
+                return redirect()->to('/rh/dashboard');
+            }
+
             return redirect()->to('/employe/dashboard');
         }
 
@@ -53,10 +70,9 @@ class EmployeController extends BaseController
 
     public function dashboard()
     {
-        $employeId = session()->get('employe_id')?:1;
-        if (!$employeId) {
-            return redirect()->to('/login');
-        }
+        $this->requireEmployeLogin();
+
+        $employeId = (int) session()->get('employe_id');
 
         $employe = SqliteDb::fetchOne('SELECT * FROM employes WHERE id = :id LIMIT 1', [':id' => $employeId]);
         if (!$employe) {
@@ -134,6 +150,35 @@ class EmployeController extends BaseController
         return view('employe/dashboard', $data);
     }
 
+    public function historique()
+    {
+        $this->requireEmployeLogin();
+
+        $employeId = (int) session()->get('employe_id');
+        $employe = SqliteDb::fetchOne('SELECT * FROM employes WHERE id = :id LIMIT 1', [':id' => $employeId]);
+        if (!$employe) {
+            return redirect()->to('/login');
+        }
+
+        $departement = null;
+        if (!empty($employe['departement_id'])) {
+            $departement = SqliteDb::fetchOne('SELECT * FROM departements WHERE id = :id LIMIT 1', [':id' => $employe['departement_id']]);
+        }
+
+        return view('employe/historique', [
+            'employe' => $employe,
+            'departement' => $departement,
+            'conges' => SqliteDb::fetchAll(
+                'SELECT c.*, t.libelle AS type_conge_libelle
+                 FROM conges c
+                 LEFT JOIN types_conge t ON t.id = c.type_conge_id
+                 WHERE c.employe_id = :id
+                 ORDER BY c.created_at DESC',
+                [':id' => $employeId]
+            ),
+        ]);
+    }
+
     public function logout()
     {
         session()->destroy();
@@ -142,12 +187,34 @@ class EmployeController extends BaseController
 
     public function profile()
     {
-        $employeId = session()->get('employe_id')?:1;
-        if (!$employeId) {
+        $this->requireEmployeLogin();
+
+        $employeId = (int) session()->get('employe_id');
+        $employe = SqliteDb::fetchOne('SELECT * FROM employes WHERE id = :id LIMIT 1', [':id' => $employeId]);
+        if (!$employe) {
             return redirect()->to('/login');
         }
 
-        return redirect()->to('/employe/dashboard');
+        $departement = null;
+        if (!empty($employe['departement_id'])) {
+            $departement = SqliteDb::fetchOne('SELECT * FROM departements WHERE id = :id LIMIT 1', [':id' => $employe['departement_id']]);
+        }
+
+        $annee = (int) date('Y');
+        $soldes = SqliteDb::fetchAll(
+            'SELECT s.*, t.libelle
+             FROM soldes s
+             LEFT JOIN types_conge t ON t.id = s.type_conge_id
+             WHERE s.employe_id = :id AND s.annee = :annee
+             ORDER BY t.libelle ASC',
+            [':id' => $employeId, ':annee' => $annee]
+        );
+
+        return view('employe/profile', [
+            'employe' => $employe,
+            'departement' => $departement,
+            'soldes' => $soldes,
+        ]);
     }
 
     public function employeForm()
