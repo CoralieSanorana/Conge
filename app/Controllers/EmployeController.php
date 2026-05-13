@@ -4,6 +4,28 @@ namespace App\Controllers;
 use App\Libraries\SqliteDb;
 class EmployeController extends BaseController
 {
+    private function roleLabel(string $role): string
+    {
+        $role = strtoupper($role);
+
+        return match ($role) {
+            'ADMIN' => 'Administrateur',
+            'RH' => 'Responsable RH',
+            default => 'Employe',
+        };
+    }
+
+    private function buildInitiales(string $prenom, string $nom): string
+    {
+        $prenom = trim($prenom);
+        $nom = trim($nom);
+
+        $first = $prenom !== '' ? strtoupper(substr($prenom, 0, 1)) : '';
+        $last = $nom !== '' ? strtoupper(substr($nom, 0, 1)) : '';
+
+        return ($first . $last) !== '' ? $first . $last : '--';
+    }
+
     public function login()
     {
         if ($this->request->is('get')) {
@@ -126,5 +148,97 @@ class EmployeController extends BaseController
         }
 
         return redirect()->to('/employe/dashboard');
+    }
+
+    public function employeForm()
+    {
+        $annee = (int) date('Y');
+        $departements = SqliteDb::fetchAll('SELECT * FROM departements ORDER BY nom ASC');
+        $employes = SqliteDb::fetchAll(
+            'SELECT e.*, d.nom AS departement_nom,
+                    COALESCE(SUM(s.jours_attribues), 0) AS solde_total_attribue,
+                    COALESCE(SUM(s.restant), 0) AS solde_total_restant
+             FROM employes e
+             LEFT JOIN departements d ON d.id = e.departement_id
+             LEFT JOIN soldes s ON s.employe_id = e.id AND s.annee = :annee
+             GROUP BY e.id
+             ORDER BY e.nom ASC, e.prenom ASC',
+            [':annee' => $annee]
+        );
+
+        foreach ($employes as &$employe) {
+            $employe['initiales'] = $this->buildInitiales((string) ($employe['prenom'] ?? ''), (string) ($employe['nom'] ?? ''));
+            $employe['role_label'] = $this->roleLabel((string) ($employe['role'] ?? 'EMPLOYE'));
+            $employe['statut_label'] = ((int) ($employe['actif'] ?? 0) === 1) ? 'actif' : 'inactif';
+            $employe['statut_class'] = ((int) ($employe['actif'] ?? 0) === 1) ? 's-approuvee' : 's-refusee';
+        }
+        unset($employe);
+
+        $data['departements'] = $departements;
+        $data['employes'] = $employes;
+        $data['annee'] = $annee;
+
+        return view('admin/employeForm', $data);
+    }
+
+    public function submitEmploye()
+    {
+        $nom = trim((string) $this->request->getPost('nom'));
+        $prenom = trim((string) $this->request->getPost('prenom'));
+        $email = strtolower(trim((string) $this->request->getPost('email')));
+        $password = (string) $this->request->getPost('password');
+        $departementId = (int) $this->request->getPost('departement_id');
+        $role = strtolower(trim((string) $this->request->getPost('role')));
+        $dateEmbauche = $this->request->getPost('date_embauche');
+
+        if (!$nom || !$prenom || !$email || !$password || !$departementId || !$role || !$dateEmbauche) {
+            session()->setFlashdata('error', 'Tous les champs sont requis.');
+            return redirect()->to('/admin/employe/form')->withInput();
+        }
+
+        if (SqliteDb::fetchOne('SELECT id FROM employes WHERE email = :email LIMIT 1', [':email' => $email])) {
+            session()->setFlashdata('error', 'Cet email est déjà utilisé par un autre employé.');
+            return redirect()->to('/admin/employe/form')->withInput();
+        }
+
+        SqliteDb::execute(
+            'INSERT INTO employes (nom, prenom, email, password, role, departement_id, date_embauche, actif)
+             VALUES (:nom, :prenom, :email, :password, :role, :departement_id, :date_embauche, :actif)',
+            [
+                ':nom' => $nom,
+                ':prenom' => $prenom,
+                ':email' => $email,
+                ':password' => password_hash($password, PASSWORD_BCRYPT),
+                ':role' => strtoupper($role),
+                ':departement_id' => $departementId,
+                ':date_embauche' => $dateEmbauche,
+                ':actif' => 1,
+            ]
+        );
+
+        $newEmploye = SqliteDb::fetchOne('SELECT id FROM employes WHERE email = :email LIMIT 1', [':email' => $email]);
+        if ($newEmploye) {
+            $annee = (int) date('Y');
+            $typesConge = SqliteDb::fetchAll('SELECT id, jours_annuels FROM types_conge');
+
+            foreach ($typesConge as $typeConge) {
+                $jours = (int) ($typeConge['jours_annuels'] ?? 0);
+                SqliteDb::execute(
+                    'INSERT INTO soldes (employe_id, type_conge_id, annee, jours_attribues, jours_pris, restant)
+                     VALUES (:employe_id, :type_conge_id, :annee, :jours_attribues, :jours_pris, :restant)',
+                    [
+                        ':employe_id' => (int) $newEmploye['id'],
+                        ':type_conge_id' => (int) $typeConge['id'],
+                        ':annee' => $annee,
+                        ':jours_attribues' => $jours,
+                        ':jours_pris' => 0,
+                        ':restant' => $jours,
+                    ]
+                );
+            }
+        }
+
+        session()->setFlashdata('success', 'Employé créé avec succès.');
+        return redirect()->to('/admin/employe/form');
     }
 }

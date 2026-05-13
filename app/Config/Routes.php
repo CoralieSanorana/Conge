@@ -29,3 +29,12 @@ $routes->group('rh', function($routes) {
 });
 
 // Routes pour les administrateurs
+$routes->group('admin', function($routes) {
+    $routes->get('dashboard', 'AdminController::dashboard');
+    $routes->get('employe/form', 'EmployeController::employeForm');
+    $routes->post('employe/submit', 'EmployeController::submitEmploye');
+    $routes->get('departement/form', 'AdminController::departementForm');
+    $routes->post('departement/submit', 'AdminController::submitDepartement');
+    $routes->get('type-conge/form', 'AdminController::typeCongeForm');
+    $routes->post('type-conge/submit', 'AdminController::submitTypeConge');
+});

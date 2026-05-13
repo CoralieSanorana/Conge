@@ -52,11 +52,11 @@
             <form action="<?= base_url('/login') ?>" method="post">
                 <div class="f-group">
                     <label class="f-label">Adresse email</label>
-                    <input type="email" name="email" class="f-input" placeholder="vous@example.mg" value="employe@example.mg"/>
+                    <input type="email" name="email" class="f-input" placeholder="vous@example.mg" value="cora@gmail.com"/>
                 </div>
                 <div class="f-group">
                     <label class="f-label">Mot de passe</label>
-                    <input type="password" name="password" class="f-input" placeholder="••••••••" value="emp123"/>
+                    <input type="password" name="password" class="f-input" placeholder="••••••••" value="123"/>
                 </div>
                 <button type="submit" class="btn-primary" style="margin-top:.5rem">
                     Se connecter <i class="bi bi-arrow-right-short"></i>

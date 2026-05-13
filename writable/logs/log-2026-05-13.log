@@ -216,3 +216,15 @@ in APPPATH\Views\employe\demande.php on line 62.
  9 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
 10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2026-05-13 08:43:57 --> PDOException: SQLSTATE[23000]: Integrity constraint violation: 19 FOREIGN KEY constraint failed
+[Method: POST, Route: admin/employe/submit]
+in APPPATH\Libraries\SqliteDb.php on line 40.
+ 1 APPPATH\Libraries\SqliteDb.php(40): PDOStatement->execute([...])
+ 2 APPPATH\Controllers\EmployeController.php(156): App\Libraries\SqliteDb::execute('INSERT INTO employes (nom, prenom, email, password, role, departement_id, date_embauche, actif)
+             VALUES (:nom, :prenom, :email, :password, :role, :departement_id, :date_embauche, :actif)', [...])
+ 3 SYSTEMPATH\CodeIgniter.php(951): App\Controllers\EmployeController->submitEmploye()
+ 4 SYSTEMPATH\CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\EmployeController))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 SYSTEMPATH\Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 8 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
