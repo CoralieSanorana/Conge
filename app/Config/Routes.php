@@ -25,6 +25,7 @@ $routes->group('rh', function($routes) {
     $routes->get('dashboard', 'RHController::dashboard');
     $routes->get('conge/approbation', 'RHController::approbation');
     $routes->post('conge/approbation', 'CongeController::submitApprobation');
+    $routes->get('conges', 'AdminController::conges');
 });
 
 // Routes pour les administrateurs
