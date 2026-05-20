@@ -4,17 +4,20 @@ $employe = $employe ?? [];
 $departement = $departement ?? null;
 $typesConge = $typesConge ?? [];
 $soldes = $soldes ?? [];
+$departements = $departements ?? [];
+$isEdit = $isEdit ?? !empty($employe['id']);
+$formAction = $formAction ?? ($isEdit ? site_url('admin/employe/update/' . ($employe['id'] ?? '')) : site_url('admin/employe/submit'));
+$submitLabel = $submitLabel ?? ($isEdit ? 'Mettre à jour l\'employé' : 'Créer l\'employé');
 $sidebarItems = [
-    ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('employe/dashboard')],
-    ['label' => 'Nouvelle demande', 'icon' => 'bi-plus-circle', 'url' => site_url('employe/conge/demande'), 'active' => true],
-    ['label' => 'Mes demandes', 'icon' => 'bi-calendar3', 'url' => site_url('employe/conge/historique')],
-    ['label' => 'Mon profil', 'icon' => 'bi-person', 'url' => site_url('employe/profile')],
+    ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('admin/dashboard')],
+    ['label' => 'Employés', 'icon' => 'bi-people', 'url' => site_url('admin/employes')],
+    ['label' => 'Congés', 'icon' => 'bi-calendar2-week', 'url' => site_url('admin/conges')],
 ];
 $sidebarUser = [
-    'name' => trim(($employe['prenom'] ?? '') . ' ' . ($employe['nom'] ?? '')) ?: 'Employé',
-    'role' => $employe['role'] ?? 'EMPLOYE',
-    'department' => $departement['nom'] ?? 'Aucun département',
-    'avatarClass' => 'av-green',
+    'name' => 'Administrateur',
+    'role' => 'ADMIN',
+    'department' => 'Direction',
+    'avatarClass' => 'av-amber',
     'initials' => strtoupper(substr($employe['prenom'] ?? 'E', 0, 1) . substr($employe['nom'] ?? 'M', 0, 1)),
 ];
 ?>
@@ -25,11 +28,11 @@ $sidebarUser = [
     <div class="main">
         <div class="topbar">
         <div>
-            <div class="topbar-title">Gestion des employés</div>
-            <div class="topbar-breadcrumb"><a href="#page-dashboard-admin">Admin</a> <i class="bi bi-chevron-right" style="font-size:.6rem"></i> Employés</div>
+            <div class="topbar-title"><?= $isEdit ? 'Modifier un employé' : 'Gestion des employés' ?></div>
+            <div class="topbar-breadcrumb"><a href="<?= site_url('admin/dashboard') ?>">Admin</a> <i class="bi bi-chevron-right" style="font-size:.6rem"></i> <a href="<?= site_url('admin/employes') ?>">Employés</a><?= $isEdit ? ' <i class="bi bi-chevron-right" style="font-size:.6rem"></i> Modifier' : '' ?></div>
         </div>
         <div class="topbar-actions">
-            <a href="#" class="btn-forest" style="padding:7px 14px;font-size:.82rem"><i class="bi bi-person-plus"></i> Ajouter</a>
+            <a href="<?= site_url('admin/employe/form') ?>" class="btn-forest" style="padding:7px 14px;font-size:.82rem"><i class="bi bi-person-plus"></i> Ajouter Employé</a>
         </div>
         </div>
 
@@ -47,45 +50,45 @@ $sidebarUser = [
                 </div>
             <?php endif; ?>
             <!-- Formulaire ajout -->
-            <form action="<?= base_url('admin/employe/submit') ?>" method="post">
+            <form action="<?= esc($formAction) ?>" method="post">
                 <div class="form-section">
-                    <h3><i class="bi bi-person-plus" style="color:var(--forest);margin-right:6px"></i>Ajouter un employé</h3>
+                    <h3><i class="bi bi-person-plus" style="color:var(--forest);margin-right:6px"></i><?= $isEdit ? 'Modifier un employé' : 'Ajouter un employé' ?></h3>
                     <div class="form-grid-2" style="margin-bottom:1rem">
                     <div class="f-group">
                         <label class="f-label">Prénom</label>
-                        <input type="text" name="prenom" class="f-input" placeholder="Jean" value="<?= esc(old('prenom', '')) ?>"/>
+                        <input type="text" name="prenom" class="f-input" placeholder="Jean" value="<?= esc(old('prenom', $employe['prenom'] ?? '')) ?>"/>
                     </div>
                     <div class="f-group">
                         <label class="f-label">Nom</label>
-                        <input type="text" name="nom" class="f-input" placeholder="Rakoto" value="<?= esc(old('nom', '')) ?>"/>
+                        <input type="text" name="nom" class="f-input" placeholder="Rakoto" value="<?= esc(old('nom', $employe['nom'] ?? '')) ?>"/>
                     </div>
                     <div class="f-group">
                         <label class="f-label">Email</label>
-                        <input type="email" name="email" class="f-input" placeholder="jean.rakoto@techmada.mg" value="<?= esc(old('email', '')) ?>"/>
+                        <input type="email" name="email" class="f-input" placeholder="jean.rakoto@techmada.mg" value="<?= esc(old('email', $employe['email'] ?? '')) ?>"/>
                     </div>
                     <div class="f-group">
-                        <label class="f-label">Mot de passe initial</label>
-                        <input type="password" name="password" class="f-input" placeholder="À communiquer à l'employé"/>
+                        <label class="f-label"><?= $isEdit ? 'Nouveau mot de passe' : 'Mot de passe initial' ?></label>
+                        <input type="password" name="password" class="f-input" placeholder="<?= $isEdit ? 'Laisser vide pour conserver le mot de passe actuel' : 'À communiquer à l\'employé' ?>"/>
                     </div>
                     <div class="f-group">
                         <label class="f-label">Département</label>
                         <select class="f-select" name="departement_id">
                             <?php foreach ($departements as $dept) : ?>
-                                <option value="<?= $dept['id'] ?>" <?= (string) old('departement_id') === (string) $dept['id'] ? 'selected' : '' ?>><?= esc($dept['nom']) ?></option>
+                                <option value="<?= $dept['id'] ?>" <?= (string) old('departement_id', $employe['departement_id'] ?? '') === (string) $dept['id'] ? 'selected' : '' ?>><?= esc($dept['nom']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="f-group">
                         <label class="f-label">Rôle</label>
                         <select class="f-select" name="role">
-                        <option value="employe" <?= old('role', 'employe') === 'employe' ? 'selected' : '' ?>>Employé</option>
-                        <option value="rh" <?= old('role') === 'rh' ? 'selected' : '' ?>>Responsable RH</option>
-                        <option value="admin" <?= old('role') === 'admin' ? 'selected' : '' ?>>Administrateur</option>
+                        <option value="employe" <?= old('role', strtolower($employe['role'] ?? 'employe')) === 'employe' ? 'selected' : '' ?>>Employé</option>
+                        <option value="rh" <?= old('role', strtolower($employe['role'] ?? 'employe')) === 'rh' ? 'selected' : '' ?>>Responsable RH</option>
+                        <option value="admin" <?= old('role', strtolower($employe['role'] ?? 'employe')) === 'admin' ? 'selected' : '' ?>>Administrateur</option>
                         </select>
                     </div>
                     <div class="f-group">
                         <label class="f-label">Date d'embauche</label>
-                        <input type="date" name="date_embauche" class="f-input" value="<?= esc(old('date_embauche', date('Y-m-d'))) ?>"/>
+                        <input type="date" name="date_embauche" class="f-input" value="<?= esc(old('date_embauche', $employe['date_embauche'] ?? date('Y-m-d'))) ?>"/>
                     </div>
                     </div>
                     <div class="flash flash-info" style="margin-bottom:1rem">
@@ -93,53 +96,11 @@ $sidebarUser = [
                     <span style="font-size:.82rem">Les soldes de congés seront initialisés automatiquement selon les types de congé configurés.</span>
                     </div>
                     <div class="form-actions">
-                    <button class="btn-forest" type="submit"><i class="bi bi-plus"></i> Créer l'employé</button>
+                    <button class="btn-forest" type="submit"><i class="bi bi-plus"></i> <?= esc($submitLabel) ?></button>
                     <button class="btn-secondary" type="reset">Réinitialiser</button>
                     </div>
                 </div>
             </form>
-            <!-- Liste employés -->
-            <div class="data-card">
-                <div class="data-card-head">
-                <h3>Tous les employés</h3>
-                <div style="display:flex;gap:6px">
-                    <input type="text" class="f-input" placeholder="Rechercher..." style="width:200px;padding:6px 10px;font-size:.8rem"/>
-                    <select class="f-select" style="font-size:.8rem;padding:6px 10px;width:auto">
-                    <option>Tous les depts</option>
-                    <option>IT</option>
-                    <option>Finance</option>
-                    </select>
-                </div>
-                </div>
-                <table class="tbl">
-                <thead>
-                    <tr><th>Employé</th><th>Département</th><th>Rôle</th><th>Embauche</th><th>Statut</th><th>Solde annuel</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($employes as $emp) : ?>
-                    <tr>
-                        <td>
-                            <div class="profile-row">
-                            <div class="avatar av-green" style="width:32px;height:32px;font-size:.68rem"><?= esc($emp['initiales']) ?></div>
-                            <div class="profile-info"><div class="pname"><?= esc($emp['prenom']) ?> <?= esc($emp['nom']) ?></div><div class="pdept"><?= esc($emp['email']) ?></div></div>
-                            </div>
-                        </td>
-                        <td class="td-muted"><?= esc($emp['departement_nom'] ?? '-') ?></td>
-                        <td><span class="type-badge" style="background:#f1efe8;color:#444441"><?= esc($emp['role_label']) ?></span></td>
-                        <td class="td-muted td-mono" style="font-size:.78rem"><?= esc($emp['date_embauche'] ?? '-') ?></td>
-                        <td><span class="statut <?= esc($emp['statut_class']) ?>" style="font-size:.68rem"><?= esc($emp['statut_label']) ?></span></td>
-                        <td><span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--forest)"><?= (int) $emp['solde_total_restant'] ?>/<?= (int) $emp['solde_total_attribue'] ?> j</span></td>
-                        <td>
-                            <div class="action-btns">
-                            <button class="btn-sm btn-edit"><i class="bi bi-pencil"></i> Éditer</button>
-                            <button class="btn-sm btn-del"><i class="bi bi-slash-circle"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                </table>
-            </div>
 
         </div>
         <div class="footer-app"><i class="bi bi-c-circle"></i> 2025 <span>TechMada RH</span></div>

@@ -236,6 +236,7 @@ code,pre,.mono{font-family:'DM Mono',monospace}
 .footer-app{padding:.75rem 1.75rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);background:var(--white);display:flex;align-items:center;gap:6px}
 .footer-app span{color:var(--forest);font-weight:500}
 
+
 /* ─── CHART CARD (ADMIN CONGES) ────────── */
 .data-card-chart{margin-top:1.25rem;background:linear-gradient(180deg,#ffffff 0%,#fcfdfb 100%)}
 .data-card-chart .data-card-head{background:linear-gradient(90deg,#ffffff 0%,#f4faf6 100%)}
@@ -252,3 +253,11 @@ code,pre,.mono{font-family:'DM Mono',monospace}
   .chart-toggle-btn{width:100%;text-align:center}
   .chart-wrap{height:310px;padding:.35rem .65rem .75rem}
 }
+
+/* FullCalendar event status colors */
+.fc-event.conge-attente{background-color:var(--warn) !important;border-color:var(--warn) !important;color:var(--white) !important}
+.fc-event.conge-approuve{background-color:var(--success) !important;border-color:var(--success) !important;color:var(--white) !important}
+.fc-event.conge-refuse{background-color:var(--danger) !important;border-color:var(--danger) !important;color:var(--white) !important}
+
+.fc-event.conge-attente .fc-event-title, .fc-event.conge-approuve .fc-event-title, .fc-event.conge-refuse .fc-event-title{color:var(--white) !important}
+>>>>>>> origin/Coralie

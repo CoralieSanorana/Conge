@@ -52,6 +52,30 @@ class AdminController extends BaseController
         return view('admin/employes', $data);
     }
 
+    public function departements()
+    {
+        $this->requireLogin();
+
+        $data = [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'departements' => SqliteDb::fetchAll('SELECT * FROM departements ORDER BY nom ASC'),
+        ];
+
+        return view('admin/departements', $data);
+    }
+
+    public function typeConges()
+    {
+        $this->requireLogin();
+
+        $data = [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'typesConge' => SqliteDb::fetchAll('SELECT * FROM types_conge ORDER BY libelle ASC'),
+        ];
+
+        return view('admin/typeConge', $data);
+    }
+
     public function conges()
     {
         $this->requireLogin();
@@ -146,15 +170,145 @@ class AdminController extends BaseController
 
     public function departementForm(){
         $this->requireLogin();
-        return view('admin/departementForm');
+        return view('admin/departementForm', [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'isEdit' => false,
+            'formAction' => site_url('admin/departement/submit'),
+            'submitLabel' => 'Soumettre',
+            'departement' => [],
+        ]);
     }
 
     public function submitDepartement(){
         $this->requireLogin();
-        $nom = $this->request->getPost('nom');
+        $nom = trim((string) $this->request->getPost('nom'));
+        $description = trim((string) $this->request->getPost('description'));
         if ($nom) {
-            SqliteDb::execute('INSERT INTO departements (nom) VALUES (:nom)', [':nom' => $nom]);
+            SqliteDb::execute(
+                'INSERT INTO departements (nom, description) VALUES (:nom, :description)',
+                [
+                    ':nom' => $nom,
+                    ':description' => $description !== '' ? $description : null,
+                ]
+            );
         }
         return redirect()->to('/admin/departement/form')->with('success', 'Département ajouté avec succès');
     }
+
+    public function editDepartement($id)
+    {
+        $this->requireLogin();
+        $departement = SqliteDb::fetchOne('SELECT * FROM departements WHERE id = :id LIMIT 1', [':id' => (int) $id]);
+        if (!$departement) {
+            return redirect()->to('/admin/departements')->with('error', 'Département introuvable.');
+        }
+
+        return view('admin/departementForm', [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'departement' => $departement,
+            'isEdit' => true,
+            'formAction' => site_url('admin/departement/update/' . $id),
+            'submitLabel' => 'Mettre à jour',
+        ]);
+    }
+
+    public function updateDepartement($id)
+    {
+        $this->requireLogin();
+        $nom = trim((string) $this->request->getPost('nom'));
+        $description = trim((string) $this->request->getPost('description'));
+
+        if ($nom === '') {
+            return redirect()->to('/admin/departement/edit/' . $id)->with('error', 'Le nom du département est obligatoire.')->withInput();
+        }
+
+        SqliteDb::execute(
+            'UPDATE departements SET nom = :nom, description = :description WHERE id = :id',
+            [
+                ':id' => (int) $id,
+                ':nom' => $nom,
+                ':description' => $description !== '' ? $description : null,
+            ]
+        );
+
+        return redirect()->to('/admin/departements')->with('success', 'Département mis à jour avec succès.');
+    }
+
+    public function typeCongeForm()
+    {
+        $this->requireLogin();
+
+        return view('admin/type_conge_form', [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'isEdit' => false,
+            'formAction' => site_url('admin/type-conge/submit'),
+            'submitLabel' => 'Soumettre',
+            'typeConge' => [],
+        ]);
+    }
+
+    public function submitTypeConge()
+    {
+        $this->requireLogin();
+        $libelle = trim((string) $this->request->getPost('libelle'));
+        $joursAnnuels = (int) $this->request->getPost('jours_annuels');
+        $deductible = (int) $this->request->getPost('deductible');
+
+        if ($libelle === '') {
+            return redirect()->to('/admin/type-conge/form')->with('error', 'Le libellé est obligatoire.')->withInput();
+        }
+
+        SqliteDb::execute(
+            'INSERT INTO types_conge (libelle, jours_annuels, deductible) VALUES (:libelle, :jours_annuels, :deductible)',
+            [
+                ':libelle' => $libelle,
+                ':jours_annuels' => $joursAnnuels,
+                ':deductible' => $deductible,
+            ]
+        );
+
+        return redirect()->to('/admin/type-conge/form')->with('success', 'Type de congé ajouté avec succès.');
+    }
+
+    public function editTypeConge($id)
+    {
+        $this->requireLogin();
+        $typeConge = SqliteDb::fetchOne('SELECT * FROM types_conge WHERE id = :id LIMIT 1', [':id' => (int) $id]);
+        if (!$typeConge) {
+            return redirect()->to('/admin/type-conges')->with('error', 'Type de congé introuvable.');
+        }
+
+        return view('admin/type_conge_form', [
+            'admin' => SqliteDb::fetchOne('SELECT e.*, d.nom AS departement_nom FROM employes e LEFT JOIN departements d ON d.id = e.departement_id WHERE e.id = :id LIMIT 1', [':id' => (int) session()->get('employe_id')]) ?? [],
+            'typeConge' => $typeConge,
+            'isEdit' => true,
+            'formAction' => site_url('admin/type-conge/update/' . $id),
+            'submitLabel' => 'Mettre à jour',
+        ]);
+    }
+
+    public function updateTypeConge($id)
+    {
+        $this->requireLogin();
+        $libelle = trim((string) $this->request->getPost('libelle'));
+        $joursAnnuels = (int) $this->request->getPost('jours_annuels');
+        $deductible = (int) $this->request->getPost('deductible');
+
+        if ($libelle === '') {
+            return redirect()->to('/admin/type-conge/edit/' . $id)->with('error', 'Le libellé est obligatoire.')->withInput();
+        }
+
+        SqliteDb::execute(
+            'UPDATE types_conge SET libelle = :libelle, jours_annuels = :jours_annuels, deductible = :deductible WHERE id = :id',
+            [
+                ':id' => (int) $id,
+                ':libelle' => $libelle,
+                ':jours_annuels' => $joursAnnuels,
+                ':deductible' => $deductible,
+            ]
+        );
+
+        return redirect()->to('/admin/type-conges')->with('success', 'Type de congé mis à jour avec succès.');
+    }
+
 }

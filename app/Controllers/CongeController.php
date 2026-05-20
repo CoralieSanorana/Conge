@@ -198,4 +198,62 @@ class CongeController extends BaseController
 
         return redirect()->to('/rh/conge/approbation')->with('success', 'La demande de congé a été mise à jour.');
     }
+
+    /**
+     * Retourne les congés de l'employé connecté au format JSON pour FullCalendar
+     */
+    public function events()
+    {
+        if (!session()->get('employe_id')) {
+            return $this->response->setStatusCode(401)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        $employeId = (int) session()->get('employe_id');
+
+        $rows = SqliteDb::fetchAll(
+            'SELECT c.*, t.libelle AS type_conge_libelle
+             FROM conges c
+             LEFT JOIN types_conge t ON t.id = c.type_conge_id
+             WHERE c.employe_id = :id',
+            [':id' => $employeId]
+        );
+
+        $events = [];
+        foreach ($rows as $r) {
+            $title = ($r['type_conge_libelle'] ?? 'Congé') . ' — ' . ($r['statut'] ?? '');
+            $start = $r['date_debut'] ?? null;
+            $end = $r['date_fin'] ?? null;
+
+            // Si ce sont des dates au format YYYY-MM-DD, FullCalendar attend un end exclusif -> ajouter 1 jour
+            if ($start && preg_match('/^\d{4}-\d{2}-\d{2}$/', $start) && $end && preg_match('/^\d{4}-\d{2}-\d{2}$/', $end)) {
+                $endDt = new \DateTime($end);
+                $endDt->modify('+1 day');
+                $end = $endDt->format('Y-m-d');
+            }
+
+            $statut = strtolower(trim((string) ($r['statut'] ?? '')));
+            $class = 'conge-attente';
+            if (strpos($statut, 'appr') !== false) {
+                $class = 'conge-approuve';
+            } elseif (strpos($statut, 'refus') !== false || strpos($statut, 'annul') !== false) {
+                $class = 'conge-refuse';
+            }
+
+            $events[] = [
+                'id' => $r['id'] ?? null,
+                'title' => $title,
+                'start' => $start,
+                'end' => $end,
+                'allDay' => true,
+                'classNames' => [$class],
+                'extendedProps' => [
+                    'type' => $r['type_conge_libelle'] ?? null,
+                    'motif' => $r['motif'] ?? null,
+                    'statut' => $r['statut'] ?? null,
+                ],
+            ];
+        }
+
+        return $this->response->setJSON($events);
+    }
 }
