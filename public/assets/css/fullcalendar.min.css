@@ -1,0 +1,17 @@
+/* Minimal FullCalendar styles for offline fallback */
+/* Provides basic layout and event appearance so the calendar remains usable offline */
+html,body{font-family:Arial,Helvetica,sans-serif}
+#calendar{max-width:1100px;margin:0 auto}
+.fc{box-sizing:border-box}
+.fc .fc-toolbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+.fc .fc-toolbar .fc-toolbar-chunk{display:flex;align-items:center}
+.fc .fc-view{background:#fff}
+.fc .fc-col-header{font-weight:600}
+.fc .fc-daygrid-event,.fc .fc-timegrid-event{padding:2px 6px;border-radius:4px;color:#fff;font-size:0.85rem}
+.fc .fc-list-event-title{font-weight:600}
+.fc .fc-scrollgrid{overflow:auto}
+
+/* Keep compatibility with our app colors (these classes are set on events) */
+.fc-event.conge-attente{background:#f0ad4e;border-color:#f0ad4e}
+.fc-event.conge-approuve{background:#28a745;border-color:#28a745}
+.fc-event.conge-refuse{background:#dc3545;border-color:#dc3545}
