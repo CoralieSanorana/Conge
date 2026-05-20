@@ -35,9 +35,9 @@ $initiales = strtoupper(substr($employe['prenom'] ?? 'E', 0, 1) . substr($employ
 
 <?= $this->include('Layouts/footer') ?>
 
-<!-- FullCalendar CSS/JS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<!-- FullCalendar CSS/JS (local for offline) -->
+<link href="<?= base_url('assets/css/fullcalendar.min.css') ?>" rel="stylesheet">
+<script src="<?= base_url('assets/js/fullcalendar.min.js') ?>"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

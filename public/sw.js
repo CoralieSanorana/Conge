@@ -3,8 +3,8 @@ const PRECACHE_URLS = [
   '/',
   '/employe/conge/calendar',
   '/employe/conge/events',
-  'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css',
-  'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'
+  '/assets/css/fullcalendar.min.css',
+  '/assets/js/fullcalendar.min.js'
 ];
 
 self.addEventListener('install', (event) => {
