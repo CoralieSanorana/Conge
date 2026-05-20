@@ -71,3 +71,14 @@
     - [wip] Gestion types congé (CRUD)
     - [wip] Approbation/refus demandes RH
     - [wip] Historique complète avec statuts
+
+20-05-2026
+- [ok] vue employe:
+    - [ok] afficher nombre total de demande de conge, par type de conges
+    - [ok] page calendar.php:
+        - [ok] afficher ses conges sous forme de calendrier mensuel, hebdomadaire interactif
+
+- [] vue admin:
+    - [] tableau de bord enrichi:
+        - [] graphique sur le nombre de conge par mois
+        - [] graphique sur les jours (lundi, mardi, ...) de conges

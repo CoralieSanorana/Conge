@@ -12,7 +12,8 @@ if (empty($sidebarItems)) {
         'ADMIN' => [
             ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('admin/dashboard')],
             ['label' => 'Employés', 'icon' => 'bi-people', 'url' => site_url('admin/employes')],
-            ['label' => 'Formulaire', 'icon' => 'bi-people', 'url' => site_url('admin/employe/form')],
+            ['label' => 'Départements', 'icon' => 'bi-building', 'url' => site_url('admin/departements')],
+            ['label' => 'Types congé', 'icon' => 'bi-calendar2-week', 'url' => site_url('admin/type-conges')],
             ['label' => 'Congés', 'icon' => 'bi-calendar2-week', 'url' => site_url('admin/conges')],
         ],
         'RH' => [
@@ -22,6 +23,7 @@ if (empty($sidebarItems)) {
         ],
         default => [
             ['label' => 'Tableau de bord', 'icon' => 'bi-grid-1x2', 'url' => site_url('employe/dashboard')],
+            ['label' => 'Calendrier', 'icon' => 'bi-calendar3', 'url' => site_url('employe/conge/calendar')],
             ['label' => 'Nouvelle demande', 'icon' => 'bi-plus-circle', 'url' => site_url('employe/conge/demande')],
             ['label' => 'Mes demandes', 'icon' => 'bi-calendar3', 'url' => site_url('employe/conge/historique')],
             ['label' => 'Mon profil', 'icon' => 'bi-person', 'url' => site_url('employe/profile')],
