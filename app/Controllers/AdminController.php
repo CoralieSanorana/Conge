@@ -90,9 +90,82 @@ class AdminController extends BaseController
                  LEFT JOIN types_conge t ON t.id = c.type_conge_id
                  ORDER BY c.created_at DESC'
             ),
+            'statsMonthly' => $this->getMonthlyStats(),
+            'statsDaily' => $this->getDailyStats(),
         ];
 
         return view('admin/conges', $data);
+    }
+
+    private function getMonthlyStats()
+    {
+        $currentYear = date('Y');
+        $monthlyData = array_fill(0, 12, 0); // Initialize all months (0-11) with 0
+        
+        $results = SqliteDb::fetchAll(
+            "SELECT strftime('%m', date_debut) as month, COUNT(*) as count
+             FROM conges
+             WHERE strftime('%Y', date_debut) = :year
+             GROUP BY strftime('%m', date_debut)
+             ORDER BY month",
+            [':year' => $currentYear]
+        );
+
+        foreach ($results as $row) {
+            $monthNum = (int) $row['month'];
+            $monthlyData[$monthNum - 1] = (int) $row['count'];
+        }
+
+        $monthLabels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+        
+        return [
+            'labels' => $monthLabels,
+            'data' => array_values($monthlyData)
+        ];
+    }
+
+    private function getDailyStats()
+    {
+        // We'll count each day covered by approved leaves. Initialize counters for Sun(0)..Sat(6)
+        $dailyData = array_fill(0, 7, 0);
+
+        // Fetch only approved leaves
+        $conges = SqliteDb::fetchAll(
+            "SELECT date_debut, date_fin FROM conges WHERE statut = 'Approuvé'"
+        );
+
+        foreach ($conges as $c) {
+            if (empty($c['date_debut'])) continue;
+
+            $start = new \DateTime($c['date_debut']);
+            $end = !empty($c['date_fin']) ? new \DateTime($c['date_fin']) : clone $start;
+
+            // ensure end >= start
+            if ($end < $start) continue;
+
+            $period = new \DatePeriod($start, new \DateInterval('P1D'), $end->modify('+1 day'));
+            foreach ($period as $dt) {
+                $w = (int) $dt->format('w'); // 0 (Sun) - 6 (Sat)
+                $dailyData[$w]++;
+            }
+        }
+
+        // Reorder to start from Monday
+        $orderedLabels = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+        $orderedData = [
+            $dailyData[1], // Monday
+            $dailyData[2], // Tuesday
+            $dailyData[3], // Wednesday
+            $dailyData[4], // Thursday
+            $dailyData[5], // Friday
+            $dailyData[6], // Saturday
+            $dailyData[0]  // Sunday
+        ];
+
+        return [
+            'labels' => $orderedLabels,
+            'data' => $orderedData
+        ];
     }
 
     public function departementForm(){

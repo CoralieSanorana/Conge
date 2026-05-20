@@ -46,7 +46,40 @@ $sidebarUser = [
                     </tbody>
                 </table>
             </div>
+            
+            <!-- Statistics Chart Section -->
+            <div class="data-card data-card-chart">
+                <div class="data-card-head">
+                    <h3>Statistiques des congés</h3>
+                    <span class="chart-note">Approuvés uniquement</span>
+                </div>
+                <div class="chart-controls">
+                    <button class="chart-toggle-btn active" data-view="monthly">Vue Mensuelle</button>
+                    <button class="chart-toggle-btn" data-view="daily">Vue Journalière</button>
+                </div>
+                <div class="chart-wrap">
+                    <canvas id="congesChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<!-- Chart.js: local only (offline) -->
+<script src="<?= base_url('assets/js/chart.umd.min.js') ?>"></script>
+<!-- Pass data to JavaScript -->
+<script>
+// Expose stats to global window so external script can read them
+window.congesData = {
+    monthly: {
+        labels: <?= json_encode($statsMonthly['labels'] ?? []) ?>,
+        data: <?= json_encode($statsMonthly['data'] ?? []) ?>
+    },
+    daily: {
+        labels: <?= json_encode($statsDaily['labels'] ?? []) ?>,
+        data: <?= json_encode($statsDaily['data'] ?? []) ?>
+    }
+};
+</script>
+<!-- Custom Chart Script -->
+<script src="<?= base_url('assets/js/conges-stats.js') ?>"></script>
 <?= $this->include('Layouts/footer') ?>
