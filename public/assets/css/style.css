@@ -235,3 +235,20 @@ code,pre,.mono{font-family:'DM Mono',monospace}
 /* ─── FOOTER ────────────────────────────── */
 .footer-app{padding:.75rem 1.75rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);background:var(--white);display:flex;align-items:center;gap:6px}
 .footer-app span{color:var(--forest);font-weight:500}
+
+/* ─── CHART CARD (ADMIN CONGES) ────────── */
+.data-card-chart{margin-top:1.25rem;background:linear-gradient(180deg,#ffffff 0%,#fcfdfb 100%)}
+.data-card-chart .data-card-head{background:linear-gradient(90deg,#ffffff 0%,#f4faf6 100%)}
+.chart-note{font-size:.68rem;color:var(--forest2);background:var(--mint);border:1px solid #c5e2d2;border-radius:999px;padding:4px 10px;font-weight:500;letter-spacing:.02em}
+.chart-controls{padding:1rem 1.25rem .25rem;display:flex;gap:.55rem;flex-wrap:wrap}
+.chart-toggle-btn{border:1px solid var(--border);background:#fff;color:var(--muted);border-radius:999px;padding:8px 14px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s ease;font-family:'DM Sans',sans-serif}
+.chart-toggle-btn:hover{border-color:#b7d8c4;color:var(--forest2);transform:translateY(-1px)}
+.chart-toggle-btn.active{background:linear-gradient(90deg,var(--forest) 0%,var(--forest2) 100%);border-color:var(--forest2);color:#fff;box-shadow:0 8px 20px rgba(45,90,61,.2)}
+.chart-wrap{height:400px;position:relative;padding:.5rem 1.1rem 1rem}
+.chart-wrap canvas{border-radius:10px;background:linear-gradient(180deg,rgba(212,237,224,.2) 0%,rgba(255,255,255,.9) 42%)}
+
+@media(max-width:500px){
+  .chart-controls{padding:.8rem .9rem .1rem}
+  .chart-toggle-btn{width:100%;text-align:center}
+  .chart-wrap{height:310px;padding:.35rem .65rem .75rem}
+}
